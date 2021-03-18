@@ -1,8 +1,9 @@
-package com.lmalvarez.demo.student;
+package com.lmalvarez.demo.model;
 
 import java.time.LocalDate;
 import java.time.Period;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -10,16 +11,22 @@ import javax.persistence.Id;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.Transient;
+import javax.persistence.UniqueConstraint;
 
-@Entity
-@Table
+@Entity(name = "Student")
+@Table(name = "student", uniqueConstraints = {
+		@UniqueConstraint(name = "student_email_unique", columnNames = { "email" }) })
 public class Student {
 	@Id
 	@SequenceGenerator(name = "student_sequence", sequenceName = "student_sequence", allocationSize = 1)
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "student_sequence")
+	@Column(name = "id", updatable = false)
 	private Long id;
+	@Column(name = "name", nullable = false, columnDefinition = "TEXT")
 	private String name;
+	@Column(name = "email", nullable = false, columnDefinition = "TEXT")
 	private String email;
+	@Column(name = "birth_date", nullable = false, columnDefinition = "date")
 	private LocalDate dob;
 	@Transient
 	private Integer age;

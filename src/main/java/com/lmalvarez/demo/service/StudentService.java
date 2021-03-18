@@ -1,4 +1,4 @@
-package com.lmalvarez.demo.student;
+package com.lmalvarez.demo.service;
 
 import java.util.List;
 import java.util.Objects;
@@ -8,6 +8,9 @@ import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import com.lmalvarez.demo.model.Student;
+import com.lmalvarez.demo.repository.StudentRepository;
 
 @Service
 public class StudentService {

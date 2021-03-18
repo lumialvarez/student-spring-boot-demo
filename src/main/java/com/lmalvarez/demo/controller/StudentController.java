@@ -1,4 +1,4 @@
-package com.lmalvarez.demo.student;
+package com.lmalvarez.demo.controller;
 
 import java.util.List;
 
@@ -12,6 +12,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+
+import com.lmalvarez.demo.model.Student;
+import com.lmalvarez.demo.service.StudentService;
 
 @RestController
 @RequestMapping(path = "api/v1/student")
