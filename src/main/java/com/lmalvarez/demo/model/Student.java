@@ -2,16 +2,22 @@ package com.lmalvarez.demo.model;
 
 import java.time.LocalDate;
 import java.time.Period;
+import java.util.HashSet;
+import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.ForeignKey;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 import javax.persistence.UniqueConstraint;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity(name = "Student")
 @Table(name = "student", uniqueConstraints = {
@@ -30,6 +36,10 @@ public class Student {
 	private LocalDate dob;
 	@Transient
 	private Integer age;
+	
+	@JsonIgnore
+	@ManyToMany(mappedBy = "enrolledStudents")
+	private Set<Subject> subjects = new HashSet<>();
 
 	public Student() {
 		super();
@@ -90,9 +100,14 @@ public class Student {
 		this.age = age;
 	}
 
+	public Set<Subject> getSubjects() {
+		return subjects;
+	}
+	
 	@Override
 	public String toString() {
-		return "Student [id=" + id + ", name=" + name + ", email=" + email + ", dob=" + dob + ", age=" + age + "]";
+		return "Student [id=" + id + ", name=" + name + ", email=" + email + ", dob=" + dob + ", age=" + age
+				+ ", subjects=" + subjects + "]";
 	}
 
 }

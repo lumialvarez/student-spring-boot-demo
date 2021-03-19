@@ -14,7 +14,7 @@ import com.lmalvarez.demo.repository.StudentRepository;
 @Configuration
 public class StudentConfig {
 	@Bean
-	CommandLineRunner commandLineRunner(StudentRepository studentRepository) {
+	CommandLineRunner commandLineRunnerStudent(StudentRepository studentRepository) {
 		return args -> {
 			Student mariam = new Student("Mariam", "ma@gmail.com", LocalDate.of(2000, Month.JANUARY, 2));
 			

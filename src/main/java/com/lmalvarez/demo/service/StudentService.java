@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.lmalvarez.demo.model.Student;
+import com.lmalvarez.demo.model.Subject;
 import com.lmalvarez.demo.repository.StudentRepository;
 
 @Service
@@ -24,6 +25,12 @@ public class StudentService {
 
 	public List<Student> getStudents() {
 		return studentRepository.findAll();
+	}
+	
+	public Student getStudentById(Long studentId) {
+		Student student = studentRepository.findById(studentId)
+				.orElseThrow(() -> new IllegalStateException("Studentd with id " + studentId + " does not exists"));
+		return student;
 	}
 
 	public void registerNewStudent(Student student) {
@@ -45,8 +52,7 @@ public class StudentService {
 	
 	@Transactional
 	public void updateStudent(Long studentId, String name, String email) {
-		Student student = studentRepository.findById(studentId)
-				.orElseThrow(() -> new IllegalStateException("Studentd with id " + studentId + " does not exists"));
+		Student student = getStudentById(studentId);
 
 		if (name != null && name.length() > 0 && !Objects.equals(student.getName(), name)) {
 			student.setName(name);
