@@ -26,7 +26,13 @@ public class Subject {
 	@Column(name = "name", nullable = false, columnDefinition = "TEXT")
 	private String name;
 	@ManyToMany
-	@JoinTable(name = "student_enrolled", joinColumns = @JoinColumn(name = "subject_id", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "student_id", referencedColumnName = "id"), foreignKey = @ForeignKey(name = "FK_subject_student_enrolled"))
+	@JoinTable(
+			name = "student_enrolled", 
+			joinColumns = @JoinColumn(name = "subject_id", referencedColumnName = "id"), 
+			inverseJoinColumns = @JoinColumn(name = "student_id", referencedColumnName = "id"), 
+			foreignKey = @ForeignKey(name = "FK_subject_to_student_enrolled"), 
+			inverseForeignKey =  @ForeignKey(name = "FK_student_to_student_enrolled")
+	)
 	private Set<Student> enrolledStudents = new HashSet<>();
 
 	public Subject() {

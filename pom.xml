@@ -6,7 +6,7 @@
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>2.4.3</version>
+		<version>2.4.4</version>
 		<relativePath /> <!-- lookup parent from repository -->
 	</parent>
 
@@ -47,25 +47,44 @@
 	</dependencies>
 
 	<profiles>
+		<!-- Profile for JAR file -->
 		<profile>
 			<id>jar</id>
 			<properties>
 				<packaging.type>jar</packaging.type>
 				<spring.profiles.active>dev</spring.profiles.active>
 			</properties>
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>org.springframework.boot</groupId>
+						<artifactId>spring-boot-maven-plugin</artifactId>
+					</plugin>
+				</plugins>
+			</build>
 		</profile>
+		<!-- Profile for WAR file -->
 		<profile>
 			<id>war</id>
 			<properties>
 				<packaging.type>war</packaging.type>
 				<spring.profiles.active>ds</spring.profiles.active>
 				<tomcat.version>10.0.2</tomcat.version>
+				<scope>provided</scope>
+				<tomcat.version>10.0.2</tomcat.version>
 			</properties>
 			<dependencies>
 				<dependency>
 					<groupId>javax.servlet</groupId>
-					<artifactId>servlet-api</artifactId>
-					<version>2.5</version>
+					<artifactId>javax.servlet-api</artifactId>
+					<version>4.0.1</version>
+					<scope>provided</scope>
+				</dependency>
+				<!-- When Spring boot suport Jakarta EE... someday -->
+				<dependency>
+					<groupId>jakarta.servlet</groupId>
+					<artifactId>jakarta.servlet-api</artifactId>
+					<version>5.0.0</version>
 					<scope>provided</scope>
 				</dependency>
 				<dependency>
@@ -74,17 +93,53 @@
 					<scope>provided</scope>
 				</dependency>
 			</dependencies>
+			<build>
+				<finalName>${project.artifactId}</finalName>
+				<plugins>
+					<plugin>
+						<groupId>org.springframework.boot</groupId>
+						<artifactId>spring-boot-maven-plugin</artifactId>
+						<executions>
+							<execution>
+								<goals>
+									<goal>repackage</goal>
+								</goals>
+							</execution>
+						</executions>
+					</plugin>
+				</plugins>
+				<pluginManagement>
+					<plugins>
+						<plugin>
+							<groupId>org.apache.maven.plugins</groupId>
+							<artifactId>maven-war-plugin</artifactId>
+							<version>${maven-war-plugin.version}</version>
+							<executions>
+								<execution>
+									<goals>
+										<goal>war</goal>
+									</goals>
+									<phase>package</phase>
+								</execution>
+							</executions>
+							<configuration>
+								<warSourceIncludes>WEB-INF/**,META-INF/**</warSourceIncludes>
+								<failOnMissingWebXml>false</failOnMissingWebXml>
+								<warSourceDirectory>target/classes/static/</warSourceDirectory>
+								<webResources>
+									<resource>
+										<directory>src/main/webapp</directory>
+										<includes>
+											<include>WEB-INF/**</include>
+										</includes>
+									</resource>
+								</webResources>
+							</configuration>
+						</plugin>
+					</plugins>
+				</pluginManagement>
+			</build>
 		</profile>
 	</profiles>
-
-	<build>
-		<plugins>
-			<plugin>
-				<groupId>org.springframework.boot</groupId>
-				<artifactId>spring-boot-maven-plugin</artifactId>
-			</plugin>
-		</plugins>
-	</build>
-
 
 </project>
