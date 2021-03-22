@@ -15,12 +15,11 @@ import com.lmalvarez.demo.subject.Subject;
 
 @Service
 public class StudentService {
-	private final StudentRepository studentRepository;
-
 	@Autowired
-	public StudentService(StudentRepository studentRepository) {
+	private StudentRepository studentRepository;
+
+	public StudentService() {
 		super();
-		this.studentRepository = studentRepository;
 	}
 
 	public List<Student> getStudents() {

@@ -3,6 +3,7 @@ package com.lmalvarez.demo.subject;
 import java.util.HashSet;
 import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.ForeignKey;
@@ -12,10 +13,13 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
+import javax.validation.constraints.NotBlank;
 
 import com.lmalvarez.demo.student.Student;
+import com.lmalvarez.demo.teacher.Teacher;
 
 @Entity(name = "Subject")
 @Table(name = "subject")
@@ -25,6 +29,7 @@ public class Subject {
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "subject_sequence")
 	@Column(name = "id", updatable = false)
 	private Long id;
+	@NotBlank(message = "Name is mandatory")
 	@Column(name = "name", nullable = false, columnDefinition = "TEXT")
 	private String name;
 	@ManyToMany
@@ -36,6 +41,10 @@ public class Subject {
 			inverseForeignKey =  @ForeignKey(name = "FK_student_to_student_enrolled")
 	)
 	private Set<Student> enrolledStudents = new HashSet<>();
+	
+	@ManyToOne(cascade = CascadeType.ALL)
+	@JoinColumn(name = "teacher_id", referencedColumnName = "id", foreignKey = @ForeignKey(name = "FK_subject_to_teacher"))
+	private Teacher teacher;
 
 	public Subject() {
 		super();
@@ -68,6 +77,14 @@ public class Subject {
 
 	public void enrollStudent(Student student) {
 		enrolledStudents.add(student);
+	}
+
+	public Teacher getTeacher() {
+		return teacher;
+	}
+
+	public void setTeacher(Teacher teacher) {
+		this.teacher = teacher;
 	}
 
 	@Override

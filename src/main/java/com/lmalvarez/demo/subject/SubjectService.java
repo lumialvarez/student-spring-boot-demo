@@ -13,17 +13,20 @@ import com.lmalvarez.demo.exception.NotFoundException;
 import com.lmalvarez.demo.student.Student;
 import com.lmalvarez.demo.student.StudentRepository;
 import com.lmalvarez.demo.student.StudentService;
+import com.lmalvarez.demo.teacher.Teacher;
+import com.lmalvarez.demo.teacher.TeacherService;
 
 @Service
 public class SubjectService {
-	private final SubjectRepository subjectRepository;
-	private final StudentService studentService;
-
 	@Autowired
-	public SubjectService(SubjectRepository subjectRepository, StudentService studentService) {
+	private SubjectRepository subjectRepository;
+	@Autowired
+	private StudentService studentService;
+	@Autowired
+	private TeacherService teacherservice;
+
+	public SubjectService() {
 		super();
-		this.subjectRepository = subjectRepository;
-		this.studentService = studentService;
 	}
 	
 	public List<Subject> getSubjects() {
@@ -63,5 +66,12 @@ public class SubjectService {
 		Subject subject = getSubjectById(subjectId);
 		Student student = studentService.getStudentById(studentId);
 		subject.enrollStudent(student);
+	}
+	
+	@Transactional
+	public void assignTeacherToSubject(Long subjectId, Long teacherId) {
+		Subject subject = getSubjectById(subjectId);
+		Teacher teacher = teacherservice.getTeacherById(teacherId);
+		subject.setTeacher(teacher);
 	}
 }

@@ -2,6 +2,8 @@ package com.lmalvarez.demo.subject;
 
 import java.util.List;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -35,7 +37,7 @@ public class SubjectController {
 	}
 
 	@PostMapping
-	public void registerNewSubject(@RequestBody Subject subject) {
+	public void registerNewSubject(@Valid @RequestBody Subject subject) {
 		subjectService.registerNewSubject(subject);
 	}
 
@@ -52,5 +54,10 @@ public class SubjectController {
 	@PutMapping(path = "{subjectId}/student/{studentId}")
 	public void enrollStudentToSubject(@PathVariable("subjectId") Long subjectId, @PathVariable("studentId") Long studentId) {
 		subjectService.enrollStudentToSubject(subjectId, studentId);
+	}
+	
+	@PutMapping(path = "{subjectId}/teacher/{teacherId}")
+	public void assignTeacherToSubject(@PathVariable("subjectId") Long subjectId, @PathVariable("teacherId") Long teacherId) {
+		subjectService.assignTeacherToSubject(subjectId, teacherId);
 	}
 }
