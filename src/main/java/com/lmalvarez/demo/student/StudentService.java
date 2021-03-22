@@ -1,4 +1,4 @@
-package com.lmalvarez.demo.service;
+package com.lmalvarez.demo.student;
 
 import java.util.List;
 import java.util.Objects;
@@ -9,9 +9,9 @@ import javax.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.lmalvarez.demo.model.Student;
-import com.lmalvarez.demo.model.Subject;
-import com.lmalvarez.demo.repository.StudentRepository;
+import com.lmalvarez.demo.exception.ConflictException;
+import com.lmalvarez.demo.exception.NotFoundException;
+import com.lmalvarez.demo.subject.Subject;
 
 @Service
 public class StudentService {
@@ -29,14 +29,14 @@ public class StudentService {
 	
 	public Student getStudentById(Long studentId) {
 		Student student = studentRepository.findById(studentId)
-				.orElseThrow(() -> new IllegalStateException("Studentd with id " + studentId + " does not exists"));
+				.orElseThrow(() -> new NotFoundException("Studentd with id " + studentId + " does not exists"));
 		return student;
 	}
 
 	public void registerNewStudent(Student student) {
 		Optional<Student> studentOptional = studentRepository.findStudentByEmail(student.getEmail());
 		if (studentOptional.isPresent()) {
-			throw new IllegalStateException("Email taken");
+			throw new ConflictException("Email "+ student.getEmail() +" already exists");
 		}
 		studentRepository.save(student);
 	}
@@ -44,7 +44,7 @@ public class StudentService {
 	public void deleteStudent(Long studentId) {
 		boolean exists = studentRepository.existsById(studentId);
 		if (!exists) {
-			throw new IllegalStateException("Studentd with id " + studentId + " does not exists");
+			throw new NotFoundException("Studentd with id " + studentId + " does not exists");
 		}
 		studentRepository.deleteById(studentId);
 
@@ -61,7 +61,7 @@ public class StudentService {
 		if (email != null && email.length() > 0 && !Objects.equals(student.getEmail(), email)) {
 			Optional<Student> studentOptional = studentRepository.findStudentByEmail(email);
 			if (studentOptional.isPresent()) {
-				throw new IllegalStateException("Email taken");
+				throw new ConflictException("Email "+ email +" already exists");
 			}
 			student.setEmail(email);
 		}

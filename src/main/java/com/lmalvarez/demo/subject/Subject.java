@@ -1,4 +1,4 @@
-package com.lmalvarez.demo.model;
+package com.lmalvarez.demo.subject;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -14,6 +14,8 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
+
+import com.lmalvarez.demo.student.Student;
 
 @Entity(name = "Subject")
 @Table(name = "subject")

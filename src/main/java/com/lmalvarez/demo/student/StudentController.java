@@ -1,6 +1,8 @@
-package com.lmalvarez.demo.controller;
+package com.lmalvarez.demo.student;
 
 import java.util.List;
+
+import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -12,9 +14,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-
-import com.lmalvarez.demo.model.Student;
-import com.lmalvarez.demo.service.StudentService;
 
 @RestController
 @RequestMapping(path = "api/v1/student")
@@ -30,9 +29,14 @@ public class StudentController {
 	public List<Student> getStudents() {
 		return studentService.getStudents();
 	}
+	
+	@GetMapping(path = "{studentId}")
+	public Student getStudentById(@PathVariable("studentId") Long studentId) {
+		return studentService.getStudentById(studentId);
+	}
 
 	@PostMapping
-	public void registerNewStudent(@RequestBody Student student) {
+	public void registerNewStudent(@Valid @RequestBody Student student) {
 		studentService.registerNewStudent(student);
 	}
 

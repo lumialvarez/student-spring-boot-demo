@@ -1,13 +1,10 @@
-package com.lmalvarez.demo.config;
+package com.lmalvarez.demo.subject;
 
 import java.util.List;
 
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-
-import com.lmalvarez.demo.model.Subject;
-import com.lmalvarez.demo.repository.SubjectRepository;
 
 @Configuration
 public class SubjectConfig {

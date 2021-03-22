@@ -1,4 +1,4 @@
-package com.lmalvarez.demo.controller;
+package com.lmalvarez.demo.subject;
 
 import java.util.List;
 
@@ -12,9 +12,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-
-import com.lmalvarez.demo.model.Subject;
-import com.lmalvarez.demo.service.SubjectService;
 
 @RestController
 @RequestMapping(path = "api/v1/subject")
@@ -30,6 +27,11 @@ public class SubjectController {
 	@GetMapping
 	public List<Subject> getSubjects() {
 		return subjectService.getSubjects();
+	}
+	
+	@GetMapping(path = "{subjectId}")
+	public Subject getSubjectById(@PathVariable("subjectId") Long subjectId) {
+		return subjectService.getSubjectById(subjectId);
 	}
 
 	@PostMapping

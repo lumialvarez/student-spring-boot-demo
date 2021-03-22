@@ -1,4 +1,4 @@
-package com.lmalvarez.demo.service;
+package com.lmalvarez.demo.subject;
 
 import java.util.List;
 import java.util.Objects;
@@ -9,10 +9,10 @@ import javax.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.lmalvarez.demo.model.Student;
-import com.lmalvarez.demo.model.Subject;
-import com.lmalvarez.demo.repository.StudentRepository;
-import com.lmalvarez.demo.repository.SubjectRepository;
+import com.lmalvarez.demo.exception.NotFoundException;
+import com.lmalvarez.demo.student.Student;
+import com.lmalvarez.demo.student.StudentRepository;
+import com.lmalvarez.demo.student.StudentService;
 
 @Service
 public class SubjectService {
@@ -32,7 +32,7 @@ public class SubjectService {
 	
 	public Subject getSubjectById(Long subjectId) {
 		Subject subject = subjectRepository.findById(subjectId)
-				.orElseThrow(() -> new IllegalStateException("Subject with id " + subjectId + " does not exists"));
+				.orElseThrow(() -> new NotFoundException("Subject with id " + subjectId + " does not exists"));
 		return subject;
 	}
 
@@ -43,7 +43,7 @@ public class SubjectService {
 	public void deleteSubject(Long subjectId) {
 		boolean exists = subjectRepository.existsById(subjectId);
 		if (!exists) {
-			throw new IllegalStateException("Subject with id " + subjectId + " does not exists");
+			throw new NotFoundException("Subject with id " + subjectId + " does not exists");
 		}
 		subjectRepository.deleteById(subjectId);
 

@@ -1,4 +1,4 @@
-package com.lmalvarez.demo.model;
+package com.lmalvarez.demo.student;
 
 import java.time.LocalDate;
 import java.time.Period;
@@ -15,22 +15,34 @@ import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 import javax.persistence.UniqueConstraint;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Past;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.lmalvarez.demo.subject.Subject;
 
 @Entity(name = "Student")
-@Table(name = "student", uniqueConstraints = {
-		@UniqueConstraint(name = "student_email_unique", columnNames = { "email" }) })
+@Table(name = "student",
+	uniqueConstraints = {@UniqueConstraint(name = "student_email_unique", columnNames = { "email" }) })
 public class Student {
 	@Id
 	@SequenceGenerator(name = "student_sequence", sequenceName = "student_sequence", allocationSize = 1)
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "student_sequence")
 	@Column(name = "id", updatable = false)
 	private Long id;
+	@NotBlank(message = "Name is mandatory")
 	@Column(name = "name", nullable = false, columnDefinition = "TEXT")
 	private String name;
+	@NotBlank(message = "Email is mandatory")
+	@Email(message = "Email should be a valid email")
 	@Column(name = "email", nullable = false, columnDefinition = "TEXT")
 	private String email;
+	@NotNull(message = "dob (Date of birth) is mandatory")
+	@Past(message = "dob must be a past date")
+	@JsonFormat(pattern = "yyyy-MM-dd")
 	@Column(name = "birth_date", nullable = false, columnDefinition = "date")
 	private LocalDate dob;
 	@Transient
